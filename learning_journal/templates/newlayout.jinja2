@@ -1,0 +1,31 @@
+
+<html><head>
+    <title>{% block title %}{% endblock%}</title>
+<link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+
+<body>
+
+<div id="thebox">
+    <div id="logo"><strong>&#123;&#123; </strong>internpelts<strong> &#125;&#125;</strong></div>
+  <div id="nav">
+  <ul>
+    <li><a href="{{ request.route_url('home') }}">HOME</a></li>
+	<li><a href="#">ABOUT</a></li>
+	<li><a href="#">PROJECTS</a></li>
+	<li><a href="#">BLOG</a></li>
+	<li><a href="#">CONTACT</a></li>
+  </ul>
+
+  </div>
+  <div id="content">
+<h1>My Python Journal</h1>
+{% block body %}
+{% endblock %}
+  </div>
+  </div>
+<br /><br />
+<div id="foot"><p>Created in the UW PCE Python Certificate Program</p>
+    <a href="http://validator.w3.org/check?uri=referer" target="_blank">Valid
+  XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer" target="_blank">Valid
+  CSS</a> | Copyright &#9426; internpelts.com | Design by <a href="http://internpelts.com">Mr. Disco</a></div>

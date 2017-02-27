@@ -8,22 +8,26 @@ from sqlalchemy import (
 )
 from datetime import datetime
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import (
+  scoped_session,
+  sessionmaker,
+  )
+from zope.sqlalchemy import ZopeTransactionExtension
+
+DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+Base = declarative_base()
 
 from .meta import Base
 
 
 now = datetime.now()
-engine = create_engine('sqlite:///')
+engine = create_engine('sqlite:///learning_journal.sqlite')
 db = sessionmaker(bind=engine)
 session = db()
 
 
-#class MyModel(Base):
-#    __tablename__ = 'models'
-#    id = Column(Integer, primary_key=True)
-#    name = Column(Text)
-#    value = Column(Integer)
 
 class Entry(Base):
     __tablename__ = 'entries'
@@ -34,12 +38,16 @@ class Entry(Base):
     edited = Column(DateTime, default=now)
 
     @classmethod
-    def all(cls):
-        return session.query(Entry).order_by(Entry.created)
+    def all(cls, session=None):
+        if session is None:
+            session = DBSession
+        return session.query(cls).order_by(sa.desc(cls.created)).all()
 
     @classmethod
-    def by_id(cls):
-        return session.query(Entry).order_by(Entry.id)
+    def by_id(cls, id, session=None):
+        if session is None:
+            session = DBSession
+        return session.query(cls).get(id)
 
 
 
